@@ -4,20 +4,14 @@ import { Input } from '../ui/input';
 import { Mail } from 'lucide-react';
 import { Button } from '../ui/button';
 import { MarqueeDemo } from './marquee';
+import { OrbitingCirclesDemo } from './orbit';
 
 const Hero = () => {
 	return (
 		<div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
 			<div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-16 lg:items-center min-h-[80vh] pt-8 lg:pt-16 pb-2 lg:pb-16">
 				<div className="order-1 lg:order-2">
-					<div className="w-full h-48 sm:h-64 md:h-80 lg:h-[500px] bg-gray-300 rounded-lg flex items-center justify-center">
-						<img
-							src="../../assets/home-crypto.jpg"
-							alt="Crypto dashboard"
-							className="w-full h-full object-cover rounded-lg"
-						/>
-					</div>
-					{/* <OrbitingCirclesDemo /> */}
+					<OrbitingCirclesDemo />
 				</div>
 
 				<div className="order-2 lg:order-1 text-center lg:text-left space-y-6 lg:space-y-8">
