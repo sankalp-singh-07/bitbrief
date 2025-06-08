@@ -14,10 +14,12 @@ const Header = () => {
 				</div>
 				<div className="flex justify-between items-center gap-3 md:gap-4">
 					<ThemeToggle />
-					<h3 className="font-normal text-sm md:text-lg">Log In</h3>
+					<button className="font-medium text-sm md:text-lg cursor-pointer">
+						Log In
+					</button>
 					<Button
 						size="default"
-						className="font-normal text-sm md:text-lg cursor-pointer bg-primary rounded-full text-background dark:text-border md:size-lg"
+						className="font-medium text-sm md:text-lg cursor-pointer bg-primary rounded-full text-background dark:text-border md:size-lg"
 					>
 						<span className="hidden sm:inline">Get Started</span>
 						<span className="sm:hidden">Sign In</span>
