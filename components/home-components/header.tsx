@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import { ThemeToggle } from '../theme-toggle';
+import Link from 'next/link';
 
 const Header = () => {
 	return (
@@ -14,15 +15,22 @@ const Header = () => {
 				</div>
 				<div className="flex justify-between items-center gap-3 md:gap-4">
 					<ThemeToggle />
-					<button className="font-medium text-sm md:text-lg cursor-pointer">
+					<Link
+						href="/sign-in"
+						className="font-medium text-sm md:text-lg cursor-pointer"
+					>
 						Log In
-					</button>
+					</Link>
 					<Button
 						size="default"
 						className="font-medium text-sm md:text-lg cursor-pointer bg-primary rounded-full text-background dark:text-border md:size-lg"
 					>
-						<span className="hidden sm:inline">Get Started</span>
-						<span className="sm:hidden">Sign In</span>
+						<Link href="/sign-up" className="hidden sm:inline">
+							Get Started
+						</Link>
+						<Link href="/sign-up" className="sm:hidden">
+							Sign In
+						</Link>
 						<ArrowRight className="ml-1 w-4 h-4 hidden sm:inline" />
 					</Button>
 				</div>

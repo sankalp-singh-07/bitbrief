@@ -3,65 +3,23 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useSignIn } from '@clerk/nextjs';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Eye, EyeOff, AlertCircle } from 'lucide-react';
-import { Alert, AlertDescription } from '../ui/alert';
+import { Eye, EyeOff } from 'lucide-react';
 
-export function LoginForm({
+export function SignupForm({
 	className,
 	...props
 }: React.ComponentProps<'form'>) {
-	const { signIn, setActive, isLoaded } = useSignIn();
+	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [error, setError] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
-	const [isLogging, setIsLogging] = useState(false);
+	const [confirmPassword, setConfirmPassword] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
-	const router = useRouter();
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!isLoaded) return;
-		try {
-			setError('');
-			setIsLogging(true);
-			const result = await signIn.create({
-				identifier: email,
-				password,
-			});
-
-			if (result.status === 'complete') {
-				await setActive({ session: result.createdSessionId });
-				router.push('/dashboard');
-			}
-		} catch (err: any) {
-			setError(err.errors?.[0]?.message || 'Login failed');
-		} finally {
-			setIsLogging(false);
-		}
-	};
-
-	const handleGoogle = async () => {
-		if (!isLoaded) return;
-
-		try {
-			setError('');
-			setIsLoading(true);
-
-			await signIn.authenticateWithRedirect({
-				strategy: 'oauth_google',
-				redirectUrl: '/sign-in',
-				redirectUrlComplete: '/dashboard',
-			});
-		} catch (err: any) {
-			setError(err?.errors?.[0]?.message || 'Google login failed');
-		} finally {
-			setIsLoading(false);
-		}
 	};
 
 	return (
@@ -71,18 +29,23 @@ export function LoginForm({
 			onSubmit={handleSubmit}
 		>
 			<div className="flex flex-col items-center gap-2 text-center">
-				<h1 className="text-2xl font-bold">Login to your account</h1>
+				<h1 className="text-2xl font-bold">Sign Up Today!</h1>
 				<p className="text-muted-foreground text-sm text-balance">
-					Enter your email below to login to your account
+					Enter details to create your account
 				</p>
 			</div>
-			{error && (
-				<Alert variant="destructive">
-					<AlertCircle className="h-4 w-4" />
-					<AlertDescription>{error}</AlertDescription>
-				</Alert>
-			)}
 			<div className="grid gap-6">
+				<div className="grid gap-3">
+					<Label htmlFor="username">Username</Label>
+					<Input
+						id="username"
+						type="text"
+						placeholder="johndoe"
+						required
+						value={username}
+						onChange={(e) => setUsername(e.target.value)}
+					/>
+				</div>
 				<div className="grid gap-3">
 					<Label htmlFor="email">Email</Label>
 					<Input
@@ -90,27 +53,17 @@ export function LoginForm({
 						type="email"
 						placeholder="m@example.com"
 						required
-						name="email"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 					/>
 				</div>
 				<div className="grid gap-3">
-					<div className="flex items-center">
-						<Label htmlFor="password">Password</Label>
-						<Link
-							href="#"
-							className="ml-auto text-sm underline-offset-4 hover:underline"
-						>
-							Forgot your password?
-						</Link>
-					</div>
+					<Label htmlFor="password">Password</Label>
 					<div className="relative">
 						<Input
 							id="password"
 							type={showPassword ? 'text' : 'password'}
 							required
-							name="password"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 							className="pr-10"
@@ -130,20 +83,43 @@ export function LoginForm({
 						</Button>
 					</div>
 				</div>
-				<Button type="submit" className="w-full" disabled={isLogging}>
-					{isLogging ? 'Logging in...' : 'Login'}
+				<div className="grid gap-3">
+					<Label htmlFor="confirmPassword">Confirm Password</Label>
+					<div className="relative">
+						<Input
+							id="confirmPassword"
+							type={showConfirmPassword ? 'text' : 'password'}
+							required
+							value={confirmPassword}
+							onChange={(e) => setConfirmPassword(e.target.value)}
+							className="pr-10"
+						/>
+						<Button
+							type="button"
+							variant="ghost"
+							size="sm"
+							className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+							onClick={() =>
+								setShowConfirmPassword(!showConfirmPassword)
+							}
+						>
+							{showConfirmPassword ? (
+								<EyeOff className="h-4 w-4" />
+							) : (
+								<Eye className="h-4 w-4" />
+							)}
+						</Button>
+					</div>
+				</div>
+				<Button type="submit" className="w-full">
+					Sign Up
 				</Button>
 				<div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
 					<span className="bg-background text-muted-foreground relative z-10 px-2">
 						Or continue with
 					</span>
 				</div>
-				<Button
-					variant="outline"
-					className="w-full"
-					onClick={handleGoogle}
-					disabled={isLoading}
-				>
+				<Button variant="outline" className="w-full">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"
@@ -154,13 +130,13 @@ export function LoginForm({
 							fill="currentColor"
 						/>
 					</svg>
-					{isLoading ? 'Redirecting...' : 'Login with Google'}
+					Sign Up with Google
 				</Button>
 			</div>
 			<div className="text-center text-sm">
-				Don&apos;t have an account?{' '}
-				<Link href="/sign-up" className="underline underline-offset-4">
-					Sign up
+				Already have an account?{' '}
+				<Link href="/sign-in" className="underline underline-offset-4">
+					Sign in
 				</Link>
 			</div>
 		</form>
