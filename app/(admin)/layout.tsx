@@ -1,3 +1,4 @@
+import SidebarComp from '@/components/sidebar-components/sidebarComp';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import React from 'react';
@@ -15,7 +16,12 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
 			});
 		}
 	}
-	return <>{children}</>;
+	return (
+		<>
+			<SidebarComp />
+			{children}
+		</>
+	);
 };
 
 export default AdminLayout;
