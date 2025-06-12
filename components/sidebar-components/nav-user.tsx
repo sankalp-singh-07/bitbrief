@@ -12,16 +12,10 @@ import {
 	SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { UserDropdown } from './userDropdown';
+import { useUserData } from '@/lib/useUserdata';
 
-export function NavUser({
-	user,
-}: {
-	user: {
-		name: string;
-		email: string;
-		avatar: string;
-	};
-}) {
+export function NavUser() {
+	const userObj = useUserData();
 	return (
 		<SidebarMenu>
 			<SidebarMenuItem>
@@ -33,8 +27,8 @@ export function NavUser({
 						>
 							<Avatar className="h-8 w-8 rounded-lg">
 								<AvatarImage
-									src={user.avatar}
-									alt={user.name}
+									src={userObj.userImg}
+									alt={userObj.userName}
 								/>
 								<AvatarFallback className="rounded-lg">
 									CN
@@ -42,16 +36,16 @@ export function NavUser({
 							</Avatar>
 							<div className="grid flex-1 text-left text-sm leading-tight">
 								<span className="truncate font-medium">
-									{user.name}
+									{userObj.userName}
 								</span>
 								<span className="truncate text-xs">
-									{user.email}
+									{userObj.userEmail}
 								</span>
 							</div>
 							<ChevronsUpDown className="ml-auto size-4" />
 						</SidebarMenuButton>
 					</DropdownMenuTrigger>
-					<UserDropdown user={user} />
+					<UserDropdown />
 				</DropdownMenu>
 			</SidebarMenuItem>
 		</SidebarMenu>

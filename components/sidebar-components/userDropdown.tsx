@@ -10,17 +10,11 @@ import {
 	DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { useSidebar } from '@/components/ui/sidebar';
+import { useUserData } from '@/lib/useUserdata';
 
-export function UserDropdown({
-	user,
-}: {
-	user: {
-		name: string;
-		email: string;
-		avatar: string;
-	};
-}) {
+export function UserDropdown() {
 	const { isMobile } = useSidebar();
+	const user = useUserData();
 
 	return (
 		<DropdownMenuContent
@@ -33,16 +27,18 @@ export function UserDropdown({
 			<DropdownMenuLabel className="p-0 font-normal">
 				<div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
 					<Avatar className="h-8 w-8 rounded-lg">
-						<AvatarImage src={user.avatar} alt={user.name} />
+						<AvatarImage src={user.userImg} alt={user.userName} />
 						<AvatarFallback className="rounded-lg">
 							CN
 						</AvatarFallback>
 					</Avatar>
 					<div className="grid flex-1 text-left text-sm leading-tight">
 						<span className="truncate font-medium">
-							{user.name}
+							{user.userName}
 						</span>
-						<span className="truncate text-xs">{user.email}</span>
+						<span className="truncate text-xs">
+							{user.userEmail}
+						</span>
 					</div>
 				</div>
 			</DropdownMenuLabel>

@@ -6,19 +6,11 @@ export const iframeHeight = '800px';
 
 export const description = 'A sidebar with a header and a search form.';
 
-const data = {
-	user: {
-		name: 'sankalp',
-		email: 'm@example.com',
-		avatar: '/avatars/shadcn.jpg',
-	},
-};
-
 export default function SidebarComp() {
 	return (
 		<div className="[--header-height:calc(--spacing(14))]">
 			<SidebarProvider className="flex flex-col">
-				<SiteHeader user={data.user} />
+				<SiteHeader />
 				<div className="flex flex-1">
 					<AppSidebar />
 					<SidebarInset>

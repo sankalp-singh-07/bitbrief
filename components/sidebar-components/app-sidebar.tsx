@@ -25,11 +25,6 @@ import {
 import { ThemeToggle } from '../theme-toggle';
 
 const data = {
-	user: {
-		name: 'sankalp',
-		email: 'me@example.com',
-		avatar: '/avatars/shadcn.jpg',
-	},
 	navSupport: [
 		{
 			title: 'Support',
@@ -91,7 +86,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				<NavSupport items={data.navSupport} className="mt-auto" />
 			</SidebarContent>
 			<SidebarFooter>
-				<NavUser user={data.user} />
+				<NavUser />
 			</SidebarFooter>
 		</Sidebar>
 	);

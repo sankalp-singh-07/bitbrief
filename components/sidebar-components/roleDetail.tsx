@@ -6,20 +6,14 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { UserDropdown } from './userDropdown';
+import { useUserData } from '@/lib/useUserdata';
 
-export function RoleDetail({
-	user,
-}: {
-	user: {
-		name: string;
-		email: string;
-		avatar: string;
-	};
-}) {
+export function RoleDetail() {
+	const user = useUserData();
 	return (
 		<div className="flex justify-between items-center w-full">
 			<div className="hidden sm:block">
-				<p className="text-sm font-medium">Welcome {user.name} 🫡</p>
+				<p className="text-sm font-medium">Welcome {user.userName} 🫡</p>
 			</div>
 			<div className="ml-auto flex items-center gap-2">
 				<DropdownMenu>
@@ -28,7 +22,7 @@ export function RoleDetail({
 							<Menu size={16} />
 						</Button>
 					</DropdownMenuTrigger>
-					<UserDropdown user={user} />
+					<UserDropdown />
 				</DropdownMenu>
 				<Badge
 					variant="secondary"
