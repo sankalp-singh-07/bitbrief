@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import { TrendingUp, Sparkles, X, Download, Mail } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { TrendingUp, Sparkles, X, Download, Mail, Loader2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import SelectCoins from '@/components/dashboard-components/selectCoins';
@@ -11,21 +11,23 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
+import { CoinsData, fetchCoinsDataCached } from '@/lib/getcoins';
 
-const availableCoins = [
+const FALLBACK_COINS = [
 	{ value: 'bitcoin', label: 'Bitcoin (BTC)' },
 	{ value: 'ethereum', label: 'Ethereum (ETH)' },
 	{ value: 'dogecoin', label: 'Dogecoin (DOGE)' },
 	{ value: 'cardano', label: 'Cardano (ADA)' },
 	{ value: 'solana', label: 'Solana (SOL)' },
-	{ value: 'polkadot', label: 'Polkadot (DOT)' },
-	{ value: 'chainlink', label: 'Chainlink (LINK)' },
-	{ value: 'litecoin', label: 'Litecoin (LTC)' },
-	{ value: 'polygon', label: 'Polygon (MATIC)' },
-	{ value: 'avalanche', label: 'Avalanche (AVAX)' },
 ];
 
-const trendingCoins = ['bitcoin', 'ethereum', 'dogecoin', 'cardano', 'solana'];
+const FALLBACK_TRENDING = [
+	'bitcoin',
+	'ethereum',
+	'dogecoin',
+	'cardano',
+	'solana',
+];
 
 const DUMMY_USER_DATA = {
 	email: 'user@example.com',
@@ -67,9 +69,14 @@ const DUMMY_NEWSLETTER_CONTENT = {
 type NewsletterPreviewProps = {
 	coins: string[];
 	onClose: () => void;
+	availableCoins: { value: string; label: string }[];
 };
 
-const NewsletterPreview = ({ coins, onClose }: NewsletterPreviewProps) => {
+const NewsletterPreview = ({
+	coins,
+	onClose,
+	availableCoins,
+}: NewsletterPreviewProps) => {
 	const downloadPDF = () => {
 		console.log('Downloading PDF for coins:', coins);
 		alert('PDF download would start here!');
@@ -133,7 +140,7 @@ const NewsletterPreview = ({ coins, onClose }: NewsletterPreviewProps) => {
 									className="bg-white dark:bg-gray-900 p-4 rounded"
 								>
 									<h3 className="font-semibold text-lg">
-										{coin?.label}
+										{coin?.label || coinValue}
 									</h3>
 									<p className="text-sm text-gray-600 dark:text-gray-400">
 										Detailed analysis included in this
@@ -215,7 +222,30 @@ const Dashboard = () => {
 	const [showNewsletter, setShowNewsletter] = useState(false);
 	const [isProUser] = useState(false);
 
-	console.log(selectedCoins);
+	const [coinsData, setCoinsData] = useState<CoinsData>({
+		availableCoins: [],
+		trendingCoins: [],
+	});
+	const [loading, setLoading] = useState<boolean>(true);
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		fetchCoinsDataCached()
+			.then((data: CoinsData) => {
+				setCoinsData(data);
+				setError(null);
+			})
+			.catch((err) => {
+				console.error('Failed to fetch coins data:', err);
+				setError('Failed to load cryptocurrency data');
+				// Use fallback data
+				setCoinsData({
+					availableCoins: FALLBACK_COINS,
+					trendingCoins: FALLBACK_TRENDING,
+				});
+			})
+			.finally(() => setLoading(false));
+	}, []);
 
 	const maxCoins = isProUser ? 10 : 3;
 
@@ -229,6 +259,18 @@ const Dashboard = () => {
 			setSelectedCoins([...selectedCoins, coin]);
 		}
 	};
+
+	// Show loading state
+	if (loading) {
+		return (
+			<div className="min-h-screen flex items-center justify-center">
+				<div className="text-center space-y-4">
+					<Loader2 className="w-8 h-8 animate-spin mx-auto" />
+					<p className="text-lg">Loading cryptocurrency data...</p>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div
@@ -251,6 +293,11 @@ const Dashboard = () => {
 							all in one place. Get AI-powered insights for
 							smarter crypto decisions.
 						</p>
+						{error && (
+							<p className="text-yellow-600 text-sm">
+								⚠️ {error} - Using cached data
+							</p>
+						)}
 					</div>
 
 					<div className="w-full max-w-4xl mx-auto border-2 px-4 py-6 sm:py-8 border-foreground/50 rounded-2xl bg-foreground/5 space-y-6">
@@ -260,7 +307,7 @@ const Dashboard = () => {
 							</h1>
 							<div className="flex justify-center">
 								<SelectCoins
-									availableCoins={availableCoins}
+									availableCoins={coinsData.availableCoins} // ✅ Using API data
 									selectedCoins={selectedCoins}
 									onSelectCoins={setSelectedCoins}
 									maxCoins={maxCoins}
@@ -277,7 +324,8 @@ const Dashboard = () => {
 									<div className="flex flex-wrap gap-2 justify-center max-w-lg">
 										{selectedCoins.map((coin) => {
 											const coinLabel =
-												availableCoins.find(
+												coinsData.availableCoins.find(
+													// ✅ Using API data
 													(c) => c.value === coin
 												)?.label || coin;
 											return (
@@ -316,18 +364,24 @@ const Dashboard = () => {
 									Trending:
 								</h4>
 								<div className="flex flex-wrap gap-2 justify-center">
-									{trendingCoins.map((coin) => (
-										<Badge
-											key={coin}
-											variant="outline"
-											className="px-2 py-1 text-sm capitalize text-foreground font-light cursor-pointer hover:bg-foreground hover:text-background transition-colors"
-											onClick={() =>
-												handleTrendingCoinClick(coin)
-											}
-										>
-											{coin}
-										</Badge>
-									))}
+									{coinsData.trendingCoins.map(
+										(
+											coin // ✅ Using API data
+										) => (
+											<Badge
+												key={coin}
+												variant="outline"
+												className="px-2 py-1 text-sm capitalize text-foreground font-light cursor-pointer hover:bg-foreground hover:text-background transition-colors"
+												onClick={() =>
+													handleTrendingCoinClick(
+														coin
+													)
+												}
+											>
+												{coin}
+											</Badge>
+										)
+									)}
 								</div>
 							</div>
 						</div>
@@ -351,6 +405,7 @@ const Dashboard = () => {
 						<NewsletterPreview
 							coins={selectedCoins}
 							onClose={() => setShowNewsletter(false)}
+							availableCoins={coinsData.availableCoins} // ✅ Pass API data
 						/>
 					)}
 				</div>
