@@ -68,7 +68,7 @@ export default function NewsletterHistory() {
 								<div className="flex flex-wrap gap-2 mt-2">
 									{nl.selectedCoins.map(coinId => {
 										const coinLabel = coinsData.availableCoins.find(c => c.value === coinId)?.label || coinId;
-										return <Badge key={coinId} variant="secondary" className="text-xs">{coinLabel.split(' ')[0]}</Badge>
+										return <Badge key={coinId} variant="secondary" className="text-xs text-black">{coinLabel.split(' ')[0]}</Badge>
 									})}
 								</div>
 							</CardContent>
