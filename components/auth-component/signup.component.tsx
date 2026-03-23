@@ -96,7 +96,7 @@ export function SignupForm({
 				strategy: 'email_code',
 			});
 			setPendingVerification(true);
-		} catch (err: any) {
+		} catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
 			console.error('Signup error:', err);
 
 			if (err.errors && err.errors[0]) {
@@ -140,7 +140,7 @@ export function SignupForm({
 			} else {
 				setError('Verification incomplete. Please try again.');
 			}
-		} catch (err: any) {
+		} catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
 			console.error('Verification error:', err);
 
 			if (err.errors && err.errors[0]) {
@@ -176,7 +176,7 @@ export function SignupForm({
 				redirectUrl: '/sign-up',
 				redirectUrlComplete: '/dashboard',
 			});
-		} catch (err: any) {
+		} catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
 			console.error('GitHub signup error:', err);
 
 			if (err.errors && err.errors[0]) {

@@ -54,7 +54,7 @@ export function LoginForm({
 			} else {
 				setError('Login incomplete. Please try again.');
 			}
-		} catch (err: any) {
+		} catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
 			console.error('Login error:', err);
 
 			if (err.errors && err.errors[0]) {
@@ -92,7 +92,7 @@ export function LoginForm({
 				redirectUrl: '/sign-in',
 				redirectUrlComplete: '/dashboard',
 			});
-		} catch (err: any) {
+		} catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
 			console.error('GitHub login error:', err);
 
 			if (err.errors && err.errors[0]) {

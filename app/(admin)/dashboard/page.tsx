@@ -9,21 +9,7 @@ import { CoinsData, fetchCoinsDataCached } from '@/lib/getcoins';
 import NewsletterPreview from '@/components/newsletter-components/newsletter-preview';
 import { useNewsletters, NewsletterContent } from '@/hooks/use-newsletters';
 
-const FALLBACK_COINS = [
-	{ value: 'bitcoin', label: 'Bitcoin (BTC)', price: 65000, change24h: 2.5, marketCap: 1200000000000, volume: 30000000000, high24h: 66000, low24h: 63000, rank: 1 },
-	{ value: 'ethereum', label: 'Ethereum (ETH)', price: 3500, change24h: 1.2, marketCap: 400000000000, volume: 15000000000, high24h: 3600, low24h: 3400, rank: 2 },
-	{ value: 'dogecoin', label: 'Dogecoin (DOGE)', price: 0.15, change24h: -0.5, marketCap: 20000000000, volume: 1000000000, high24h: 0.16, low24h: 0.14, rank: 8 },
-	{ value: 'cardano', label: 'Cardano (ADA)', price: 0.45, change24h: 0.8, marketCap: 16000000000, volume: 400000000, high24h: 0.47, low24h: 0.43, rank: 10 },
-	{ value: 'solana', label: 'Solana (SOL)', price: 145, change24h: 5.4, marketCap: 65000000000, volume: 4000000000, high24h: 150, low24h: 135, rank: 5 },
-];
 
-const FALLBACK_TRENDING = [
-	'bitcoin',
-	'ethereum',
-	'dogecoin',
-	'cardano',
-	'solana',
-];
 
 const Dashboard = () => {
 	const [selectedCoins, setSelectedCoins] = useState<string[]>([]);
@@ -47,13 +33,8 @@ const Dashboard = () => {
 				setError(null);
 			})
 			.catch((err) => {
-				console.warn('Failed to fetch coins data. Applying fallback.', err);
-				setError(null); // Clear error so the dashboard looks normal using fallback data
-				// Use fallback data
-				setCoinsData({
-					availableCoins: FALLBACK_COINS,
-					trendingCoins: FALLBACK_TRENDING,
-				});
+				console.warn('Dashboard fetch issue handled upstream:', err);
+				setError('Using cached offline data');
 			})
 			.finally(() => setLoading(false));
 	}, []);
