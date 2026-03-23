@@ -5,6 +5,10 @@ interface CoinMarketData {
 	market_cap_rank: number;
 	current_price: number;
 	market_cap: number;
+	total_volume: number;
+	price_change_percentage_24h: number;
+	high_24h: number;
+	low_24h: number;
 }
 
 interface TrendingCoinItem {
@@ -25,6 +29,13 @@ interface TrendingResponse {
 interface CoinOption {
 	value: string;
 	label: string;
+	price: number;
+	change24h: number;
+	marketCap: number;
+	volume: number;
+	high24h: number;
+	low24h: number;
+	rank: number;
 }
 
 interface CoinsData {
@@ -34,28 +45,39 @@ interface CoinsData {
 
 export const fetchCoinsData = async (): Promise<CoinsData> => {
 	try {
-		const coinsResponse = await fetch(
-			'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1'
-		);
-		const coins: CoinMarketData[] = await coinsResponse.json();
+		const [coinsResponse, trendingResponse] = await Promise.all([
+			fetch(
+				'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1'
+			),
+			fetch('https://api.coingecko.com/api/v3/search/trending'),
+		]);
 
-		const trendingResponse = await fetch(
-			'https://api.coingecko.com/api/v3/search/trending'
-		);
+		if (!coinsResponse.ok || !trendingResponse.ok) {
+			throw new Error('CoinGecko API returned an error response');
+		}
+
+		const coins: CoinMarketData[] = await coinsResponse.json();
 		const trending: TrendingResponse = await trendingResponse.json();
 
 		return {
 			availableCoins: coins.map((coin: CoinMarketData) => ({
 				value: coin.id,
 				label: `${coin.name} (${coin.symbol.toUpperCase()})`,
+				price: coin.current_price,
+				change24h: coin.price_change_percentage_24h,
+				marketCap: coin.market_cap,
+				volume: coin.total_volume,
+				high24h: coin.high_24h,
+				low24h: coin.low_24h,
+				rank: coin.market_cap_rank
 			})),
 			trendingCoins: trending.coins
 				.slice(0, 5)
 				.map((coin: TrendingCoin) => coin.item.id),
 		};
 	} catch (error) {
-		console.error('Error fetching coins:', error);
-		return { availableCoins: [], trendingCoins: [] };
+		console.warn('Handling CoinGecko fetch failure with fallback:', error);
+		throw error;
 	}
 };
 

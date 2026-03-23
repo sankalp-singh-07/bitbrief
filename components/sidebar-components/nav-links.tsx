@@ -19,7 +19,7 @@ export function NavLinks({
 		icon: LucideIcon;
 	}[];
 }) {
-	const { isMobile } = useSidebar();
+	useSidebar();
 
 	return (
 		<SidebarGroup className="group-data-[collapsible=icon]:hidden">

@@ -1,0 +1,40 @@
+
+> bitbrief@0.1.0 build
+> next build
+
+   ▲ Next.js 15.3.3
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled successfully in 8.0s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/10) ...
+   Generating static pages (2/10) 
+   Generating static pages (4/10) 
+   Generating static pages (7/10) 
+ ✓ Generating static pages (10/10)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                     169 kB         312 kB
+├ ○ /_not-found                            996 B         131 kB
+├ ƒ /dashboard                           11.8 kB         172 kB
+├ ƒ /newsletter                            153 B         130 kB
+├ ○ /sign-in                             3.65 kB         177 kB
+├ ○ /sign-up                             28.4 kB         202 kB
+└ ƒ /watchlist                             153 B         130 kB
++ First Load JS shared by all             130 kB
+  ├ chunks/31684-78e3c36ccc17ced8.js     46.4 kB
+  ├ chunks/4bd1b696-b3057c7fe3c3ce10.js  53.2 kB
+  ├ chunks/webpack-f2ed6c061c012639.js   30.3 kB
+  └ other shared chunks (total)            232 B
+
+
+ƒ Middleware                             77.5 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

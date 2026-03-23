@@ -1,0 +1,98 @@
+   ▲ Next.js 15.3.3
+   - Local:        http://localhost:3004
+   - Network:      http://192.168.0.101:3004
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1369ms
+ ✓ Compiled /middleware in 151ms (224 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 19.3s (9486 modules)
+ ⨯ [TypeError: localStorage.getItem is not a function] {
+  digest: '1984191854'
+}
+[TypeError: localStorage.getItem is not a function]
+ ⨯ [TypeError: localStorage.getItem is not a function] { page: '/' }
+(node:25917) Warning: `--localstorage-file` was provided without a valid path
+    at Object.get (node:internal/webstorage:32:25)
+    at /Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:274:210270
+    at DevOverlay (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:274:210478)
+    at react-stack-bottom-frame (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:240690)
+    at renderWithHooks (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:70854)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:85582)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:156530)
+    at renderChildrenArray (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:153781)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147686)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:133543)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:156530)
+    at renderChildrenArray (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:153781)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147686)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:133543)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at finishFunctionComponent (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:71864)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:87063)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at finishFunctionComponent (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:71864)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:87063)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:139974)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:139974)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:139974)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:139974)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:139974)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderElement (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:139974)
+    at retryNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:147220)
+    at renderNodeDestructive (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:146483)
+    at renderNode (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:156530)
+    at renderChildrenArray (/Users/sankalpsingh/Developer/Projects/bitbrief/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:150:153781)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 14.1s (9820 modules)
+ GET / 500 in 34583ms
+ ✓ Compiled in 3.5s (4903 modules)
+ ✓ Compiled in 2.7s (4849 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz'
+ ✓ Compiled in 1857ms (4849 modules)
+ ✓ Compiled in 706ms (4849 modules)
+ ✓ Compiled in 1837ms (4849 modules)
+ ✓ Compiled in 801ms (4849 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz'
+ ✓ Compiled in 1826ms (4849 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz'
+ ✓ Compiled in 1070ms (4849 modules)
+ ✓ Compiled in 824ms (4849 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz'
+ ✓ Compiled in 787ms (4849 modules)
+ ✓ Compiled in 906ms (4849 modules)
+ ✓ Compiled in 1177ms (4849 modules)
+ ✓ Compiled in 815ms (4849 modules)
+ ✓ Compiled in 679ms (4849 modules)
+ ✓ Compiled in 1147ms (4849 modules)
+ ✓ Compiled in 528ms (4849 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz'
+ ✓ Compiled in 941ms (4849 modules)
+ ✓ Compiled in 741ms (4849 modules)
+ ✓ Compiled in 1051ms (4849 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz'
+ ✓ Compiled in 1779ms (4849 modules)
+ ✓ Compiled in 740ms (4849 modules)
+ ✓ Compiled in 890ms (4849 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/sankalpsingh/Developer/Projects/bitbrief/.next/cache/webpack/client-development/0.pack.gz'
