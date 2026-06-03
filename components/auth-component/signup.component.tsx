@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useSignUp, useUser } from '@clerk/nextjs';
 import { useState, useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Eye, EyeOff, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -28,6 +28,8 @@ export function SignupForm({
 	const [pendingVerification, setPendingVerification] = useState(false);
 	const [code, setCode] = useState('');
 	const router = useRouter();
+	const searchParams = useSearchParams();
+	const initialEmail = searchParams.get('email') || '';
 
 	const {
 		register,
@@ -36,6 +38,9 @@ export function SignupForm({
 		formState: { errors, isSubmitting },
 	} = useForm<signUpSchemaType>({
 		resolver: zodResolver(signUpSchema),
+		defaultValues: {
+			email: initialEmail,
+		},
 		mode: 'onChange',
 	});
 

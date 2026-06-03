@@ -1,6 +1,7 @@
 import { SignupForm } from '@/components/auth-component/signup.component';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Suspense } from 'react';
 
 export default function SignupPage() {
 	return (
@@ -27,7 +28,9 @@ export default function SignupPage() {
 				</div>
 				<div className="flex flex-1 items-center justify-center">
 					<div className="w-full max-w-xs">
-						<SignupForm />
+						<Suspense fallback={<div className="text-center text-sm text-muted-foreground animate-pulse">Loading form...</div>}>
+							<SignupForm />
+						</Suspense>
 					</div>
 				</div>
 			</div>

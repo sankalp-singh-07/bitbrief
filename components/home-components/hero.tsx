@@ -1,12 +1,29 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Input } from '../ui/input';
 import { Mail } from 'lucide-react';
 import { Button } from '../ui/button';
 import { MarqueeDemo } from './marquee';
 import { OrbitingCirclesDemo } from './orbit';
+import { useRouter } from 'next/navigation';
 
 const Hero = () => {
+	const [email, setEmail] = useState('');
+	const router = useRouter();
+
+	const handleGetStarted = () => {
+		if (!email) {
+			router.push('/sign-up');
+		} else {
+			router.push(`/sign-up?email=${encodeURIComponent(email)}`);
+		}
+	};
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			handleGetStarted();
+		}
+	};
 	return (
 		<div className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
 			<div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-16 lg:items-center min-h-[80vh] pt-8 lg:pt-16 pb-2 lg:pb-16">
@@ -35,10 +52,14 @@ const Hero = () => {
 								<Input
 									type="email"
 									placeholder="Enter your email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									onKeyDown={handleKeyDown}
 									className="pl-10 md:pl-12 pr-3 py-2 md:py-3 text-sm md:text-base h-10 md:h-12 w-full border-2 border-primary"
 								/>
 							</div>
 							<Button
+								onClick={handleGetStarted}
 								size="default"
 								className="font-normal text-sm md:text-lg cursor-pointer bg-primary h-10 md:h-12 px-4 md:px-6 whitespace-nowrap text-background dark:text-border"
 							>
