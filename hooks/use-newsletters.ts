@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useNewsletterStore } from '@/store/useNewsletterStore';
 
 export type NewsletterArticle = {
 	title: string;
@@ -13,6 +14,7 @@ export type QuickStat = {
 
 export type NewsletterContent = {
 	id: string;
+  _id?: string;
 	title: string;
 	date: string;
 	subtitle: string;
@@ -28,50 +30,42 @@ export type NewsletterContent = {
 		isLocked: boolean;
 	}[];
 	selectedCoins: string[];
-	timestamp: number;
+	timestamp?: number;
+  createdAt?: string;
 };
 
-const STORAGE_KEY = 'bitbrief_newsletters';
-
 export function useNewsletters() {
-	const [newsletters, setNewsletters] = useState<NewsletterContent[]>([]);
-	const [isLoaded, setIsLoaded] = useState(false);
+	const { newsletters, isLoaded, fetchNewsletters, addNewsletter, removeNewsletter } = useNewsletterStore();
 
-	// Load from local storage on mount
+	// Load from database on mount via Zustand store
 	useEffect(() => {
-		try {
-			const stored = localStorage.getItem(STORAGE_KEY);
-			if (stored) {
-				setNewsletters(JSON.parse(stored));
-			}
-		} catch (error) {
-			console.error('Failed to load newsletters from storage:', error);
-		} finally {
-			setIsLoaded(true);
-		}
-	}, []);
+		if (!isLoaded) {
+      fetchNewsletters();
+    }
+	}, [isLoaded, fetchNewsletters]);
 
-	const saveNewsletter = (newsletter: Omit<NewsletterContent, 'id' | 'timestamp'>) => {
-		const newNewsletter: NewsletterContent = {
-			...newsletter,
-			id: crypto.randomUUID(),
-			timestamp: Date.now(),
-		};
-
-		const updatedNewsletters = [newNewsletter, ...newsletters];
-		setNewsletters(updatedNewsletters);
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedNewsletters));
-		return newNewsletter;
+	const saveNewsletter = async (newsletter: Omit<NewsletterContent, 'id' | '_id' | 'timestamp' | 'createdAt'>) => {
+    const result = await addNewsletter(newsletter);
+    return {
+      ...result,
+      id: result._id?.toString() || result.id || crypto.randomUUID(),
+      timestamp: result.createdAt ? new Date(result.createdAt).getTime() : Date.now(),
+    } as NewsletterContent;
 	};
 
-	const deleteNewsletter = (id: string) => {
-		const updatedNewsletters = newsletters.filter((n) => n.id !== id);
-		setNewsletters(updatedNewsletters);
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedNewsletters));
+	const deleteNewsletter = async (id: string) => {
+		await removeNewsletter(id);
 	};
+
+  // Map the fetched _id to id so existing components continue rendering keys properly
+  const mappedNewsletters = newsletters.map(n => ({
+    ...n,
+    id: n._id?.toString() || n.id || crypto.randomUUID(),
+    timestamp: n.createdAt ? new Date(n.createdAt).getTime() : n.timestamp,
+  })) as NewsletterContent[];
 
 	return {
-		newsletters,
+		newsletters: mappedNewsletters,
 		isLoaded,
 		saveNewsletter,
 		deleteNewsletter,

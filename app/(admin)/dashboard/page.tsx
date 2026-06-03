@@ -41,7 +41,7 @@ const Dashboard = () => {
 
 	const maxCoins = isProUser ? 10 : 3;
 
-	const handleGenerateNewsletter = () => {
+	const handleGenerateNewsletter = async () => {
 		const selectedData = selectedCoins.map(coinId => 
 			coinsData.availableCoins.find(c => c.value === coinId)
 		).filter(Boolean);
@@ -65,7 +65,7 @@ Market Cap: $${(c!.marketCap / 1e9).toFixed(2)}B
 Volume (24H): $${(c!.volume / 1e9).toFixed(2)}B`,
 		}));
 
-		const newNewsletter = saveNewsletter({
+		const newNewsletter = await saveNewsletter({
 			title: 'BitBrief Market Report',
 			date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
 			subtitle: 'Dynamic Portfolio Analysis',

@@ -5,6 +5,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import React from 'react';
+import { syncUser } from '@/app/actions/user.actions';
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
 	const { userId } = await auth();
@@ -12,6 +13,14 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
 	else if (userId) {
 		const client = await clerkClient();
 		const user = await client.users.getUser(userId);
+		
+		// Ensure Mongoose Document exists
+		try {
+			await syncUser();
+		} catch (error) {
+			console.error('Failed to sync to MongoDB on layout load', error);
+		}
+
 		const role = user.publicMetadata?.role;
 		if (!role) {
 			await client.users.updateUserMetadata(userId, {

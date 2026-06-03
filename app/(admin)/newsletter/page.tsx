@@ -57,12 +57,12 @@ export default function NewsletterHistory() {
 										<Calendar className="w-3 h-3" />
 										{nl.date}
 									</Badge>
-									<Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => deleteNewsletter(nl.id)}>
+									<Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => deleteNewsletter(nl.id!)}>
 										<Trash2 className="w-4 h-4" />
 									</Button>
 								</div>
 								<CardTitle className="text-xl font-serif mt-4">{nl.title}</CardTitle>
-								<p className="text-sm text-muted-foreground font-medium">Issue #{nl.id.substring(0, 5).toUpperCase()}</p>
+								<p className="text-sm text-muted-foreground font-medium">Issue #{nl.id!.substring(0, 5).toUpperCase()}</p>
 							</CardHeader>
 							<CardContent className="flex-grow">
 								<div className="flex flex-wrap gap-2 mt-2">

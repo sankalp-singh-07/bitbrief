@@ -11,10 +11,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useSidebar } from '@/components/ui/sidebar';
 import { useUserData } from '@/lib/useUserdata';
+import { useRouter } from 'next/navigation';
+import { useClerk } from '@clerk/nextjs';
 
 export function UserDropdown() {
 	const { isMobile } = useSidebar();
 	const user = useUserData();
+	const router = useRouter();
+	const { signOut } = useClerk();
 
 	return (
 		<DropdownMenuContent
@@ -44,28 +48,28 @@ export function UserDropdown() {
 			</DropdownMenuLabel>
 			<DropdownMenuSeparator />
 			<DropdownMenuGroup>
-				<DropdownMenuItem className="cursor-pointer">
+				<DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/upgrade')}>
 					<Sparkles />
 					Upgrade to Pro
 				</DropdownMenuItem>
 			</DropdownMenuGroup>
 			<DropdownMenuSeparator />
 			<DropdownMenuGroup>
-				<DropdownMenuItem className="cursor-pointer">
+				<DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/account')}>
 					<BadgeCheck />
 					Account
 				</DropdownMenuItem>
-				<DropdownMenuItem className="cursor-pointer">
+				<DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/billing')}>
 					<CreditCard />
 					Billing
 				</DropdownMenuItem>
-				<DropdownMenuItem className="cursor-pointer">
+				<DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/notifications')}>
 					<Bell />
 					Notifications
 				</DropdownMenuItem>
 			</DropdownMenuGroup>
 			<DropdownMenuSeparator />
-			<DropdownMenuItem className="cursor-pointer hover:bg-red-500 hover:text-white">
+			<DropdownMenuItem className="cursor-pointer hover:bg-red-500 hover:text-white" onClick={() => signOut()}>
 				<LogOut />
 				Log out
 			</DropdownMenuItem>
