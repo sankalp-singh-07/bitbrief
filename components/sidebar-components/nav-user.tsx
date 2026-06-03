@@ -26,10 +26,12 @@ export function NavUser() {
 							className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 						>
 							<Avatar className="h-8 w-8 rounded-lg">
-								<AvatarImage
-									src={userObj.userImg}
-									alt={userObj.userName}
-								/>
+								{userObj.userImg ? (
+									<AvatarImage
+										src={userObj.userImg}
+										alt={userObj.userName}
+									/>
+								) : null}
 								<AvatarFallback className="rounded-lg">
 									CN
 								</AvatarFallback>
