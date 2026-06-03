@@ -18,6 +18,7 @@ export async function getNewsletters() {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function saveNewsletter(data: any) {
   try {
     const { userId } = await auth();

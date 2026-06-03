@@ -6,6 +6,8 @@ export interface IUser {
   name?: string;
   plan: 'FREE' | 'PRO';
   createdAt: Date;
+  subscriptionStart?: Date;
+  subscriptionExpiry?: Date;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -14,6 +16,8 @@ const UserSchema = new Schema<IUser>({
   name: { type: String },
   plan: { type: String, enum: ['FREE', 'PRO'], default: 'FREE' },
   createdAt: { type: Date, default: Date.now },
+  subscriptionStart: { type: Date },
+  subscriptionExpiry: { type: Date },
 });
 
 export const User = models.User || model<IUser>('User', UserSchema);

@@ -56,11 +56,11 @@ const SelectCoins = ({
 			<PopoverContent className="w-[200px] p-0 bg-background">
 				<Command>
 					<CommandInput
-						placeholder="Search framework..."
+						placeholder="Search coin..."
 						className="h-9"
 					/>
 					<CommandList>
-						<CommandEmpty>No framework found.</CommandEmpty>
+						<CommandEmpty>No coin found.</CommandEmpty>
 						<CommandGroup>
 							{availableCoins.map((coin) => (
 								<CommandItem

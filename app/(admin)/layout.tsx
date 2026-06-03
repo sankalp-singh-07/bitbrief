@@ -6,6 +6,7 @@ import { auth, clerkClient } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import React from 'react';
 import { syncUser } from '@/app/actions/user.actions';
+import { UserInitializer } from '@/components/user-initializer';
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
 	const { userId } = await auth();
@@ -31,6 +32,7 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
 	return (
 		<div className="[--header-height:calc(--spacing(14))]">
 			<SidebarProvider className="flex flex-col">
+				<UserInitializer />
 				<SiteHeader />
 				<div className="flex flex-1">
 					<AppSidebar />

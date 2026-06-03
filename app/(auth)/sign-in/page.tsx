@@ -27,6 +27,7 @@ export default function LoginPage() {
 					src="/login-cover.jpg"
 					alt="Image"
 					fill
+					priority
 					className="object-cover dark:brightness-[0.2] dark:grayscale"
 				/>
 			</div>

@@ -84,15 +84,15 @@ export function FeedbackModal({ isOpen, onClose }: { isOpen: boolean, onClose: (
             <div className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium">What do you like most?</label>
-                <Textarea placeholder="Share your favorite features..." value={liked} onChange={(e: any) => setLiked(e.target.value)} required />
+                <Textarea placeholder="Share your favorite features..." value={liked} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setLiked(e.target.value)} required />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">What could be improved?</label>
-                <Textarea placeholder="Constructive criticism is welcome..." value={improved} onChange={(e: any) => setImproved(e.target.value)} required />
+                <Textarea placeholder="Constructive criticism is welcome..." value={improved} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setImproved(e.target.value)} required />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Any bugs or issues? (Optional)</label>
-                <Textarea placeholder="Did something break?" value={bugs} onChange={(e: any) => setBugs(e.target.value)} />
+                <Textarea placeholder="Did something break?" value={bugs} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setBugs(e.target.value)} />
               </div>
             </div>
 

@@ -40,7 +40,7 @@ export default function UpgradePage() {
       <div className="min-h-screen flex items-center justify-center -mt-10">
         <div className="text-center space-y-4 max-w-md px-4">
           <ShieldCheck className="w-16 h-16 text-emerald-500 mx-auto" />
-          <h2 className="text-2xl font-serif">You're already a Pro!</h2>
+          <h2 className="text-2xl font-serif">You&apos;re already a Pro!</h2>
           <p className="text-muted-foreground">Thank you for your active subscription. You already have access to all premium features.</p>
           <Button variant="outline" onClick={() => router.push('/dashboard')} className="mt-4">
             Return to Dashboard

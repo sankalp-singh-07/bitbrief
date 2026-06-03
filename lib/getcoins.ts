@@ -71,13 +71,33 @@ const FALLBACK_TRENDING = [
 	'solana',
 ];
 
+const fetchWithTimeout = async (resource: string, options: RequestInit & { timeout?: number } = {}) => {
+	const { timeout = 3000 } = options;
+	
+	const controller = new AbortController();
+	const id = setTimeout(() => controller.abort(), timeout);
+	
+	try {
+		const response = await fetch(resource, {
+			...options,
+			signal: controller.signal
+		});
+		clearTimeout(id);
+		return response;
+	} catch (error) {
+		clearTimeout(id);
+		throw error;
+	}
+};
+
 export const fetchCoinsData = async (): Promise<CoinsData> => {
 	try {
 		const [coinsResponse, trendingResponse] = await Promise.all([
-			fetch(
-				'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true'
+			fetchWithTimeout(
+				'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=true',
+				{ timeout: 3000 }
 			),
-			fetch('https://api.coingecko.com/api/v3/search/trending'),
+			fetchWithTimeout('https://api.coingecko.com/api/v3/search/trending', { timeout: 3000 }),
 		]);
 
 		if (!coinsResponse.ok || !trendingResponse.ok) {
@@ -105,7 +125,7 @@ export const fetchCoinsData = async (): Promise<CoinsData> => {
 				.slice(0, 5)
 				.map((coin: TrendingCoin) => coin.item.id),
 		};
-	} catch (err) {
+	} catch {
 		// Suppressing console log to prevent Next.js dev overlay from interrupting the UI. 
 		// Fallback data returned gracefully.
 		return {

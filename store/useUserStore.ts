@@ -7,19 +7,24 @@ interface UserState {
   email: string;
   isSynced: boolean;
   isLoading: boolean;
+  subscriptionStart?: string;
+  subscriptionExpiry?: string;
   
   initializeUser: () => Promise<void>;
   upgradePlan: () => Promise<void>;
 }
 
-export const useUserStore = create<UserState>((set) => ({
+export const useUserStore = create<UserState>((set, get) => ({
   plan: 'FREE',
   name: '',
   email: '',
   isSynced: false,
   isLoading: false,
+  subscriptionStart: undefined,
+  subscriptionExpiry: undefined,
 
   initializeUser: async () => {
+    if (get().isSynced) return;
     set({ isLoading: true });
     try {
       const dbUser = await syncUser();
@@ -27,6 +32,8 @@ export const useUserStore = create<UserState>((set) => ({
         plan: dbUser.plan, 
         name: dbUser.name, 
         email: dbUser.email, 
+        subscriptionStart: dbUser.subscriptionStart,
+        subscriptionExpiry: dbUser.subscriptionExpiry,
         isSynced: true,
         isLoading: false 
       });
@@ -40,7 +47,12 @@ export const useUserStore = create<UserState>((set) => ({
     set({ isLoading: true });
     try {
       const dbUser = await upgradeToPro();
-      set({ plan: dbUser.plan, isLoading: false });
+      set({ 
+        plan: dbUser.plan, 
+        subscriptionStart: dbUser.subscriptionStart,
+        subscriptionExpiry: dbUser.subscriptionExpiry,
+        isLoading: false 
+      });
     } catch (error) {
       set({ isLoading: false });
       throw error;

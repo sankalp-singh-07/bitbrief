@@ -3,15 +3,16 @@
 import { useState, useEffect } from 'react';
 import { Search, Plus, TrendingUp } from 'lucide-react';
 import { useWatchlist } from '@/hooks/use-watchlist';
-import { fetchCoinsDataCached, CoinsData } from '@/lib/getcoins';
+import { CoinsData } from '@/lib/getcoins';
+import { getCoinsData } from '@/app/actions/coins.actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import WatchlistCard from '@/components/watchlist-components/watchlist-card';
 import AlertModal from '@/components/watchlist-components/alert-modal';
-
-// MOCK: In a real app, this would be determined by Clerk user metadata.
-const IS_PRO_USER = false; 
+import { useUserStore } from '@/store/useUserStore';
+import { useRouter } from 'next/navigation';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function WatchlistPage() {
 	const { watchlist, isLoaded, addCoin, removeCoin, addAlert } = useWatchlist();
@@ -19,10 +20,13 @@ export default function WatchlistPage() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [alertCoinId, setAlertCoinId] = useState<string | null>(null);
 	
-	const maxCoins = IS_PRO_USER ? 10 : 3;
+	const { plan } = useUserStore();
+	const router = useRouter();
+	const isProUser = plan === 'PRO';
+	const maxCoins = isProUser ? 10 : 3;
 
 	useEffect(() => {
-		fetchCoinsDataCached().then(setCoinsData).catch(console.error);
+		getCoinsData().then(setCoinsData).catch(console.error);
 	}, []);
 
 	const filteredAvailableCoins = coinsData.availableCoins
@@ -35,7 +39,41 @@ export default function WatchlistPage() {
 		setSearchQuery('');
 	};
 
-	if (!isLoaded) return <div className="p-8 text-center text-muted-foreground animate-pulse">Initializing Premium Environment...</div>;
+	if (!isLoaded) {
+		return (
+			<div className="container mx-auto px-4 py-8 max-w-7xl space-y-10 animate-pulse">
+				<div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
+					<div className="space-y-3">
+						<Skeleton className="h-12 w-64 rounded-lg" />
+						<Skeleton className="h-6 w-48 rounded-lg" />
+					</div>
+					<Skeleton className="h-20 w-80 rounded-2xl" />
+				</div>
+				<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+					{[1, 2, 3].map(i => (
+						<div key={i} className="border border-border/40 p-6 rounded-2xl bg-card space-y-6">
+							<div className="flex gap-3 items-center">
+								<Skeleton className="h-10 w-10 rounded-full" />
+								<div className="space-y-2 flex-1">
+									<Skeleton className="h-5 w-24 rounded" />
+									<Skeleton className="h-4 w-12 rounded" />
+								</div>
+							</div>
+							<div className="space-y-2">
+								<Skeleton className="h-4 w-28 rounded" />
+								<Skeleton className="h-10 w-48 rounded" />
+							</div>
+							<Skeleton className="h-16 w-full rounded-lg" />
+							<div className="grid grid-cols-2 gap-4">
+								<Skeleton className="h-10 w-full rounded" />
+								<Skeleton className="h-10 w-full rounded" />
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className="container mx-auto px-4 py-8 max-w-7xl animate-in fade-in duration-500">
@@ -45,27 +83,45 @@ export default function WatchlistPage() {
 					<h1 className="text-4xl sm:text-5xl font-bold font-serif mb-3 tracking-tight">Intelligence Watchlist</h1>
 					<p className="text-lg text-muted-foreground flex items-center gap-2">
 						Track your assets with AI-precision. 
-						<Badge variant={IS_PRO_USER ? "default" : "secondary"} className="text-xs">
-							{IS_PRO_USER ? 'Pro Tier' : 'Free Tier'}
+						<Badge variant={isProUser ? "default" : "secondary"} className="text-xs">
+							{isProUser ? 'Pro Tier' : 'Free Tier'}
 						</Badge>
 					</p>
 				</div>
 
-				<div className="flex items-center gap-4 bg-background/50 p-3 rounded-2xl border border-border shadow-sm backdrop-blur w-full md:w-auto">
-					<div className="flex flex-col">
-						<span className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-1">Capacity Limits</span>
-						<div className="flex items-center gap-2">
-							<div className="w-32 h-2.5 bg-muted rounded-full overflow-hidden">
-								<div 
-									className={`h-full ${watchlist.length >= maxCoins ? 'bg-destructive' : 'bg-primary'} transition-all duration-500`} 
-									style={{ width: (watchlist.length / maxCoins * 100) + '%' }}
-								/>
-							</div>
-							<span className="text-sm font-bold">{watchlist.length} / {maxCoins}</span>
+				<div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-card/80 p-5 rounded-2xl border border-border shadow-xl backdrop-blur-md w-full md:max-w-md">
+					<div className="flex-1 space-y-2">
+						<div className="flex justify-between items-center text-sm">
+							<span className="font-semibold text-foreground">Watchlist Capacity</span>
+							<span className="font-bold text-primary">{watchlist.length} / {maxCoins} slots</span>
 						</div>
+						<div className="w-full h-3 bg-muted rounded-full overflow-hidden border border-border/30">
+							<div 
+								className={`h-full rounded-full ${
+									watchlist.length >= maxCoins 
+										? 'bg-amber-500' 
+										: watchlist.length / maxCoins > 0.7 
+										? 'bg-amber-400' 
+										: 'bg-primary'
+								} transition-all duration-500`} 
+								style={{ width: `${Math.min(100, (watchlist.length / maxCoins) * 100)}%` }}
+							/>
+						</div>
+						<p className="text-xs text-muted-foreground">
+							{isProUser 
+								? 'Premium capacity active (10 coins max).' 
+								: `${maxCoins - watchlist.length} of ${maxCoins} slots remaining. Upgrade to unlock 10 slots.`}
+						</p>
 					</div>
-					{!IS_PRO_USER && watchlist.length >= maxCoins && (
-						<Button size="sm" variant="default" className="text-xs shadow-md">Upgrade for 10+</Button>
+					{!isProUser && (
+						<Button 
+							size="sm" 
+							variant="default" 
+							className="bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-600 hover:to-yellow-500 text-black font-semibold shadow-md transition-all self-center sm:self-auto shrink-0"
+							onClick={() => router.push('/upgrade')}
+						>
+							Upgrade to Pro
+						</Button>
 					)}
 				</div>
 			</div>
@@ -159,7 +215,7 @@ export default function WatchlistPage() {
 									coinData={coinData} 
 									onRemove={removeCoin}
 									onAddAlert={() => setAlertCoinId(item.coinId)}
-									isProUser={IS_PRO_USER}
+									isProUser={isProUser}
 								/>
 							);
 						})}
@@ -172,7 +228,7 @@ export default function WatchlistPage() {
 						coinName={coinsData.availableCoins.find(c => c.value === alertCoinId)?.label}
 						currentPrice={coinsData.availableCoins.find(c => c.value === alertCoinId)?.price}
 						currentAlertCount={watchlist.find(w => w.coinId === alertCoinId)?.alerts.length || 0}
-						isProUser={IS_PRO_USER}
+						isProUser={isProUser}
 						onSave={(alert) => {
 							if (alertCoinId) {
 								addAlert(alertCoinId, alert);

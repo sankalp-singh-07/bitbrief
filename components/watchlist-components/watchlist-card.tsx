@@ -57,7 +57,7 @@ export default function WatchlistCard({ item, coinData, onRemove, onAddAlert, is
 						<div className="w-10 h-10 rounded-full overflow-hidden bg-white/10 flex items-center justify-center shrink-0">
 							{coinData.image ? (
 								// eslint-disable-next-line @next/next/no-img-element
-								<img src={coinData.image} alt={coinData.label} width={40} height={40} className="object-cover w-full h-full rounded-full" />
+								<img src={coinData.image} alt={coinData.label} width={40} height={40} loading="lazy" className="object-cover w-full h-full rounded-full" />
 							) : (
 								<div className="w-full h-full bg-primary/20" />
 							)}

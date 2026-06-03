@@ -49,7 +49,7 @@ export function SupportModal({ isOpen, onClose }: { isOpen: boolean, onClose: ()
           <div className="py-12 flex flex-col items-center justify-center text-center space-y-4">
             <CheckCircle2 className="w-16 h-16 text-primary" />
             <h3 className="text-xl font-medium">Ticket Created</h3>
-            <p className="text-muted-foreground text-sm">We'll get back to you soon.</p>
+            <p className="text-muted-foreground text-sm">We&apos;ll get back to you soon.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 mt-4">

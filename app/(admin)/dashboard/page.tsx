@@ -1,21 +1,24 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { TrendingUp, Sparkles, Loader2 } from 'lucide-react';
+import { TrendingUp, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import SelectCoins from '@/components/dashboard-components/selectCoins';
 
-import { CoinsData, fetchCoinsDataCached } from '@/lib/getcoins';
+import { CoinsData } from '@/lib/getcoins';
+import { getCoinsData } from '@/app/actions/coins.actions';
 import NewsletterPreview from '@/components/newsletter-components/newsletter-preview';
 import { useNewsletters, NewsletterContent } from '@/hooks/use-newsletters';
-
-
+import { useUserStore } from '@/store/useUserStore';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Dashboard = () => {
 	const [selectedCoins, setSelectedCoins] = useState<string[]>([]);
 	const [showNewsletter, setShowNewsletter] = useState(false);
 	const [currentNewsletter, setCurrentNewsletter] = useState<NewsletterContent | null>(null);
-	const [isProUser] = useState(false);
+	
+	const { plan } = useUserStore();
+	const isProUser = plan === 'PRO';
 	
 	const { saveNewsletter } = useNewsletters();
 
@@ -27,7 +30,7 @@ const Dashboard = () => {
 	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
-		fetchCoinsDataCached()
+		getCoinsData()
 			.then((data: CoinsData) => {
 				setCoinsData(data);
 				setError(null);
@@ -105,10 +108,24 @@ Volume (24H): $${(c!.volume / 1e9).toFixed(2)}B`,
 	// Show loading state
 	if (loading) {
 		return (
-			<div className="min-h-screen flex items-center justify-center">
+			<div className="container mx-auto px-4 py-8 max-w-6xl space-y-12 animate-pulse min-h-[70vh] flex flex-col justify-center">
 				<div className="text-center space-y-4">
-					<Loader2 className="w-8 h-8 animate-spin mx-auto" />
-					<p className="text-lg">Loading cryptocurrency data...</p>
+					<Skeleton className="h-16 w-3/4 mx-auto rounded-xl" />
+					<Skeleton className="h-6 w-1/2 mx-auto" />
+				</div>
+				<div className="w-full max-w-4xl mx-auto border border-border/40 p-8 rounded-2xl bg-card space-y-6 shadow-sm">
+					<div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+						<Skeleton className="h-8 w-48" />
+						<Skeleton className="h-10 w-44 rounded-lg" />
+					</div>
+					<div className="space-y-2">
+						<Skeleton className="h-4 w-24 mx-auto" />
+						<div className="flex justify-center gap-2">
+							<Skeleton className="h-8 w-20 rounded-full" />
+							<Skeleton className="h-8 w-20 rounded-full" />
+							<Skeleton className="h-8 w-20 rounded-full" />
+						</div>
+					</div>
 				</div>
 			</div>
 		);

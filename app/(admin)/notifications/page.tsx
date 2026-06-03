@@ -34,7 +34,7 @@ export default function NotificationsPage() {
       {notifications.length === 0 ? (
         <Card className="p-12 text-center bg-muted/20 border-dashed">
           <Bell className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-medium mb-2">You're all caught up!</h3>
+          <h3 className="text-xl font-medium mb-2">You&apos;re all caught up!</h3>
           <p className="text-muted-foreground">No new notifications right now.</p>
         </Card>
       ) : (

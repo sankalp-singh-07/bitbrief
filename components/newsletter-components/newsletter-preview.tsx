@@ -9,6 +9,7 @@ import {
 	CardTitle,
 } from '@/components/ui/card';
 import { NewsletterContent } from '@/hooks/use-newsletters';
+import { useRouter } from 'next/navigation';
 
 type NewsletterPreviewProps = {
 	content: NewsletterContent;
@@ -21,6 +22,7 @@ const NewsletterPreview = ({
 	onClose,
 	availableCoins,
 }: NewsletterPreviewProps) => {
+	const router = useRouter();
 	const downloadPDF = () => {
 		console.log('Downloading PDF for newsletter:', content.id);
 		alert('PDF download would start here!');
@@ -156,7 +158,7 @@ const NewsletterPreview = ({
 									</p>
 									{insight.isLocked && (
 										<div className="absolute inset-0 flex items-center justify-center">
-											<Button variant="default" className="pointer-events-auto bg-blue-600 text-white hover:bg-blue-700 shadow-lg" onClick={() => alert('Upgrade flow initiated!')}>
+											<Button variant="default" className="pointer-events-auto bg-blue-600 text-white hover:bg-blue-700 shadow-lg" onClick={() => router.push('/upgrade')}>
 												Upgrade to Read
 											</Button>
 										</div>

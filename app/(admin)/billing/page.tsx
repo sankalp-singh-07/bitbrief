@@ -9,10 +9,18 @@ import { Button } from '@/components/ui/button';
 import { CreditCard, Rocket, CheckCircle2, Clock } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
+interface TransactionData {
+  _id: string;
+  amount: number;
+  status: string;
+  createdAt: string;
+  paymentId?: string;
+}
+
 export default function BillingPage() {
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [loading, setLoading] = useState(true);
-  const { plan } = useUserStore();
+  const { plan, subscriptionStart, subscriptionExpiry } = useUserStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -37,13 +45,40 @@ export default function BillingPage() {
             <h3 className="text-lg font-medium text-muted-foreground mb-2">Current Plan</h3>
             <div className="flex items-end gap-4 mb-6">
               <span className="text-5xl font-bold font-serif tracking-tight">{plan === 'PRO' ? 'Pro' : 'Free'} Tier</span>
-              {plan === 'PRO' && <Badge className="mb-2 bg-amber-500 text-black hover:bg-amber-600">Active</Badge>}
+              {plan === 'PRO' && <Badge className="mb-2 bg-amber-500 text-black hover:bg-amber-600 font-semibold">Active</Badge>}
             </div>
             {plan === 'FREE' ? (
               <p className="text-muted-foreground mb-6 max-w-md">You are currently on the Free Tier. Upgrade to Pro to track up to 10 coins, unlock unlimited alerts, and access AI Predictive Insights.</p>
             ) : (
               <p className="text-muted-foreground mb-6 max-w-md">Thank you for being a Pro member! You have full access to all BitBrief predictive analytics and unlimited tracking caps.</p>
             )}
+            
+            {plan === 'PRO' && subscriptionExpiry && (
+              <div className="mt-6 pt-6 border-t border-border/50 space-y-3 text-sm">
+                <div className="flex flex-col sm:flex-row sm:justify-between max-w-md gap-1 sm:gap-4 text-muted-foreground">
+                  <span>Subscription Period:</span>
+                  <span className="font-semibold text-foreground">
+                    {subscriptionStart ? new Date(subscriptionStart).toLocaleDateString() : 'N/A'} &mdash; {new Date(subscriptionExpiry).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:justify-between max-w-md gap-1 sm:gap-4 text-muted-foreground">
+                  <span>Status:</span>
+                  <span className="font-semibold text-emerald-500 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4" /> Active (3 Months Pass)
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {plan === 'FREE' && subscriptionExpiry && (
+              <div className="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm max-w-md space-y-1">
+                <p className="font-semibold text-amber-600 dark:text-amber-400">Subscription Expired</p>
+                <p className="text-muted-foreground text-xs">
+                  Your Pro subscription expired on {new Date(subscriptionExpiry).toLocaleDateString()}. You have been returned to the Free Tier.
+                </p>
+              </div>
+            )}
+
             {plan === 'FREE' && (
               <Button size="lg" onClick={() => router.push('/upgrade')} className="bg-primary text-primary-foreground font-medium px-8 w-full sm:w-auto">
                 <Rocket className="w-4 h-4 mr-2" /> Upgrade to Pro

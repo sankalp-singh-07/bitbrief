@@ -20,6 +20,7 @@ export function ThemeToggle() {
 				setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
 			}
 			className="cursor-pointer border-2"
+			aria-label="Toggle theme"
 		>
 			{resolvedTheme === 'dark' ? (
 				<Sun className="w-4 h-4" />
